@@ -1,6 +1,6 @@
 #其中 pro 目录就是vue在本地打包出来的一个目录，名字可以随便取
 # 设置基础镜像
-FROM nginx
+FROM nginx:alpine
 # # 定义作者
 # MAINTAINER kl
 # 将当前Dockerfile文件同级的的pro文件夹复制到容器内部 /usr/share/nginx/html/pro 这个目录下面
