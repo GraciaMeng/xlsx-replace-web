@@ -14,5 +14,3 @@ COPY nginx.conf /etc/nginx/nginx.conf
 RUN echo 'echo init ok!!'
 
 EXPOSE 80
-
-Ï
