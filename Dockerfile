@@ -5,7 +5,7 @@ FROM nginx:alpine
 # MAINTAINER kl
 # 将当前Dockerfile文件同级的的pro文件夹复制到容器内部 /usr/share/nginx/html/pro 这个目录下面
 #容器内部中如果这个目录不存在，会自动创建pro目录
-COPY dist  /usr/share/nginx/html/dist
+COPY dist  /usr/share/nginx/html/xlsx-replace-web
 # COPY dist  /usr/share/nginx/html/dist
 #将当前Dockerfile文件同级的nginx.conf文件拷贝到容器内部的 /etc/nginx/nginx.conf
 #如果没有会创建，如果有会覆盖
