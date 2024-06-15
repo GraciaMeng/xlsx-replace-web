@@ -1,5 +1,4 @@
-# 使用 Node.js 16.18.0-alpine 作为基础镜像
-FROM node:20.5.0-alpine as frontend
+FROM node:20.14.0-alpine as frontend
 
 # 将当前工作目录设置为/app
 WORKDIR /app
