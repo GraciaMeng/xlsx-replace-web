@@ -16,7 +16,5 @@ RUN pnpm install
 # 将源代码复制到 /app 目录下
 COPY . .
 
-CMD ls -al 
-
 # 打包构建
-# RUN pnpm build
+RUN pnpm build
