@@ -1,16 +1,41 @@
-#其中 pro 目录就是vue在本地打包出来的一个目录，名字可以随便取
-# 设置基础镜像
+# 使用 Node.js 16.18.0-alpine 作为基础镜像
+FROM node:20.14.0-alpine as frontend
+
+ARG env
+# 将当前工作目录设置为/app
+WORKDIR /app
+
+# 将 package.json 和 package-lock.json 复制到 /app 目录下
+COPY package*.json ./
+
+RUN npm config set registry https://registry.npmmirror.com
+
+# 运行 npm install 安装依赖
+RUN npm install pnpm -g
+
+RUN pnpm install
+
+# 将源代码复制到 /app 目录下
+COPY . .
+
+# 打包构建
+RUN npm run build
+
 FROM nginx:alpine
-# # 定义作者
-# MAINTAINER kl
-# 将当前Dockerfile文件同级的的pro文件夹复制到容器内部 /usr/share/nginx/html/pro 这个目录下面
-#容器内部中如果这个目录不存在，会自动创建pro目录
-COPY dist  /usr/share/nginx/html/xlsx-replace-web
+
+# 将构建后的代码复制到 nginx 镜像中
+COPY --from=frontend /app/dist /usr/share/nginx/html/xlsx-replace-web
+
+#设置时区
+RUN cp /usr/share/zoneinfo/Asia/Shanghai /etc/localtime && echo 'Asia/Shanghai' >/etc/timezone
+
 # COPY dist  /usr/share/nginx/html/dist
 #将当前Dockerfile文件同级的nginx.conf文件拷贝到容器内部的 /etc/nginx/nginx.conf
 #如果没有会创建，如果有会覆盖
 COPY nginx.conf /etc/nginx/nginx.conf
-#输出一句话 表示完成
-RUN echo 'echo init ok!!'
 
+# 暴露容器的 8080 端口，此处其实只是一个声明作用，不写的话也可以，后面运行容器的
 EXPOSE 80
+
+# 启动 nginx 服务
+CMD ["nginx", "-g", "daemon off;"]
