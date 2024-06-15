@@ -1,17 +1,16 @@
 # 使用 Node.js 16.18.0-alpine 作为基础镜像
-FROM node:20.14.0-alpine as frontend
+FROM node:20.5.0-alpine as frontend
 
-ARG env
 # 将当前工作目录设置为/app
 WORKDIR /app
-
-# 将 package.json 和 package-lock.json 复制到 /app 目录下
-COPY package*.json ./
 
 RUN npm config set registry https://registry.npmmirror.com
 
 # 运行 npm install 安装依赖
 RUN npm install pnpm -g
+
+# 将 package.json 和 package-lock.json 复制到 /app 目录下
+COPY package*.json ./
 
 RUN pnpm install
 
@@ -19,7 +18,7 @@ RUN pnpm install
 COPY . .
 
 # 打包构建
-RUN npm run build
+RUN pnpm build
 
 FROM nginx:alpine
 
